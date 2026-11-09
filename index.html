@@ -149,8 +149,10 @@ window.openProductModal=function(index,mode){
   $$("#modalContent [data-preview-nav]").forEach(b=>b.addEventListener("click",()=>{$$("#modalContent [data-preview-nav]").forEach(z=>z.classList.remove("active"));b.classList.add("active");$("#previewFeedback").textContent=b.textContent+" section selected. This preview uses sample data; full workflows are configured during implementation."; }));
   $$("#modalContent [data-preview-action]").forEach(b=>b.addEventListener("click",()=>{$("#previewFeedback").textContent=b.textContent+" selected. This is a concept action; no real record or payment is created."; }));
  }else{
+  $("#modalContent").innerHTML='<span class="tag">'+esc(p.tag)+'</span><h2>'+esc(p.title)+'</h2><p>'+esc(p.desc)+'</p><div class="detail-price">Starting from <strong>'+esc(p.price)+'</strong> <span class="smallmuted">USD · indicative price</span></div><h3>Key features</h3><ul class="detail-list">'+list+'</ul><h3>What is included</h3><p>'+esc(d[2])+'</p><h3>Estimated delivery</h3><p>'+esc(d[3])+'</p><p class="smallmuted">Final price and timeline depend on requirements, integrations, hosting and third-party services. This is a custom development offer, not an already deployed off-the-shelf product.</p><button class="btn" id="detailQuote">Request this software ↗</button>';
+  $("#modalContent").querySelector("#detailQuote").addEventListener("click",()=>{$("#modal").classList.add("hidden");$("#quotation").scrollIntoView({behavior:"smooth"});});
+ }
  $("#modal").classList.remove("hidden");
-}
 $$("[data-details]").forEach(b=>b.addEventListener("click",()=>openProductModal(Number(b.dataset.details),"details")));
 $$("[data-demo]").forEach(b=>b.addEventListener("click",()=>openProductModal(Number(b.dataset.demo),"demo")));
 
