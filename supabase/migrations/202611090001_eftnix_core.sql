@@ -53,7 +53,7 @@ alter table public.payment_submissions enable row level security;
 
 drop policy if exists "Public can submit quote requests" on public.quotes;
 create policy "Public can submit quote requests" on public.quotes
- for insert to anon, authenticated with check (status = 'new');
+ for insert to anon, authenticated with check (status = 'new' and (user_id is null or user_id = auth.uid()));
 drop policy if exists "Customers can view own quotes" on public.quotes;
 create policy "Customers can view own quotes" on public.quotes
  for select to authenticated using (user_id = auth.uid() or public.is_eftnix_admin());
