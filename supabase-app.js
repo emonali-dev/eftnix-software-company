@@ -48,8 +48,8 @@ if(oldAdmin){
  const btn=oldAdmin.cloneNode(true);oldAdmin.replaceWith(btn);btn.id='eftnixAdminLogin';btn.textContent='Sign in to admin desk';
  btn.addEventListener('click',async()=>{
   await refreshSession();if(!session){authPanel();$('#eftnixAuth')?.scrollIntoView({behavior:'smooth'});toast('Sign in with an authorised EFTNIX admin account.');return}
-  const {data:profile,error}=await db.from('quotes').select('id').limit(1);
-  if(error){toast('Admin access not available. Ensure SQL setup is applied and admin role is assigned.');return}
+  const {data:isAdmin,error:roleError}=await db.rpc('is_eftnix_admin');
+  if(roleError||!isAdmin){toast('This account is not authorised as an EFTNIX administrator.');return}
   const {data:pay,error:pe}=await db.from('payment_submissions').select('id,created_at,customer_name,email,method,amount_bdt,transaction_id,status,proof_path').order('created_at',{ascending:false}).limit(100);
   if(pe){toast('This account does not have admin permission.');return}
   const panel=$('#adminPanel');panel.classList.remove('hidden');
