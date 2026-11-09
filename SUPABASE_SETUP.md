@@ -10,7 +10,9 @@ In Supabase Dashboard → SQL Editor, run `supabase/migrations/202611090001_eftn
 - Enable Email provider in Authentication → Providers.
 - Configure the production Site URL and redirect URLs for your Vercel domain and eventual custom domain.
 - Create your own admin user via Authentication → Users.
-- Assign `app_metadata.role = eftnix_admin` using a trusted server/admin process only. Do not use user_metadata and never expose service_role keys in frontend code.
+- After creating your admin user, assign the trusted role from the Supabase SQL Editor (replace the email):
+  `update auth.users set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"eftnix_admin"}'::jsonb where email = 'YOUR_ADMIN_EMAIL';`
+- Do not use user_metadata and never expose service_role keys in frontend code.
 - Public visitors can submit quotation requests. Customers must sign in to submit payment proof.
 
 ## 3. Payment safety
