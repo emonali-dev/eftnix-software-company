@@ -1,0 +1,20 @@
+name: Validate EFTNIX marketplace
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [feat/production-platform-foundation]
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check Supabase integration syntax
+        run: node --input-type=module --check < supabase-app.js
+      - name: Check HTML file exists and is non-empty
+        run: test -s index.html
+      - name: Check migration exists
+        run: test -s supabase/migrations/202611090001_eftnix_core.sql
