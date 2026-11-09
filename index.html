@@ -110,8 +110,8 @@ function openProductModal(index,mode){
  }
  $("#modal").classList.remove("hidden");
 }
-$("[data-details]").forEach(b=>b.addEventListener("click",()=>openProductModal(Number(b.dataset.details),"details")));
-$("[data-demo]").forEach(b=>b.addEventListener("click",()=>openProductModal(Number(b.dataset.demo),"demo")));
+$$("[data-details]").forEach(b=>b.addEventListener("click",()=>openProductModal(Number(b.dataset.details),"details")));
+$$("[data-demo]").forEach(b=>b.addEventListener("click",()=>openProductModal(Number(b.dataset.demo),"demo")));
 
 function toast(msg){const t=$('#toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3500)}
 function money(v,c){return c==='BDT'?'৳'+Math.round(v*110).toLocaleString('en-US'):c==='EUR'?'€'+Math.round(v*.92).toLocaleString('en-US'):'$'+Math.round(v).toLocaleString('en-US')}
