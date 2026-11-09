@@ -171,7 +171,57 @@ window.openProductModal=function(index,mode){
   const search=$("#modalContent").querySelector("#previewSearch");
   search.addEventListener("input",()=>{$$("#previewRows tr").forEach(r=>r.hidden=!r.textContent.toLowerCase().includes(search.value.toLowerCase()));});
   $$("#modalContent [data-preview-nav]").forEach(b=>b.addEventListener("click",()=>{$$("#modalContent [data-preview-nav]").forEach(z=>z.classList.remove("active"));b.classList.add("active");$("#previewFeedback").textContent=b.textContent+" section selected. This preview uses sample data; full workflows are configured during implementation."; }));
-  $$("#modalContent [data-preview-action]").forEach(b=>b.addEventListener("click",()=>{$("#previewFeedback").textContent=b.textContent+" selected. This is a concept action; no real record or payment is created."; }));
+  const actionFeedback=$("#previewFeedback");
+  const tbody=$("#previewRows");
+  const actionButtons=$("#modalContent [data-preview-action]");
+  const actionSamples=[
+   [["Unit 305","New tenant","$780","Pending"],["Unit 410","New tenant","$920","Pending"]],
+   [["New Student","Science tutor","Grade 8","New match"],["New Student 2","English course","Beginner","New match"]],
+   [["Sample Product","SKU-NEW","$25.00","25"],["New sale item","SKU-ADD","$12.00","40"]],
+   [["New Contact","EFTNIX Demo","$2,500","New lead"],["New Opportunity","Sample Co.","$4,800","Qualified"]],
+   [["New stock item","WH-A","120","Healthy"],["New supply","WH-B","60","Review"]],
+   [["New listing","Demo Seller","$45","Draft"],["New seller item","Demo Store","$79","Pending"]],
+   [["New student","Grade 6","Not marked","Due"],["New enrolment","Grade 7","Not marked","Pending"]],
+   [["New course","EFTNIX Academy","0","Draft"],["New lesson","Course module","0","Draft"]],
+   [["New guest","Room 210","Today","Reserved"],["New reservation","Room 305","Tomorrow","Pending"]],
+   [["#R-NEW","Table 06","2 items","New"],["#R-NEW2","Takeaway","1 item","New"]],
+   [["New patient","Dr. Lee","11:30 AM","Requested"],["New booking","Dr. Khan","12:00 PM","Requested"]],
+   [["New employee","Operations","—","Pending"],["New team member","Support","—","Pending"]],
+   [["INV-NEW","Demo Customer","$450","Draft"],["INV-NEW2","Sample Client","$780","Draft"]],
+   [["New candidate","Product Designer","2 years","Applied"],["New applicant","Sales Executive","4 years","Review"]],
+   [["FX-NEW","Phnom Penh","Unassigned","Created"],["FX-NEW2","Siem Reap","Unassigned","Created"]],
+   [["New customer","Consultation","03:00 PM","Pending"],["New appointment","Service visit","04:00 PM","Pending"]],
+   [["New attendee","EFTNIX Summit","General","Not checked"],["New guest","Demo Event","VIP","Not checked"]],
+   [["New member","Starter Plan","Today","Pending"],["New subscriber","Pro Plan","Today","Pending"]],
+   [["Test conversation","Website chat","Demo request","Open"],["Test lead","WhatsApp","Pricing","Captured"]],
+   [["New project","Demo workspace","0%","Planning"],["New task","Sample project","0%","Open"]]
+  ];
+  actionButtons.forEach(b=>b.addEventListener("click",()=>{
+   const n=Number(b.dataset.previewAction),label=b.textContent.trim();
+   if(index===2&&n===0){
+    actionFeedback.textContent="Checkout preview: sample cart reviewed. No real charge or payment has been made.";
+    b.textContent="Sale previewed ✓";
+    return;
+   }
+   if(index===1&&n===1){
+    actionFeedback.textContent="Matching simulation complete: 3 sample tutor recommendations are available in this preview.";
+    b.textContent="Matches ready ✓";
+    return;
+   }
+   if(index===6&&n===1){
+    actionFeedback.textContent="Attendance preview updated: sample attendance action selected. No student records were changed.";
+    b.textContent="Attendance preview ✓";
+    return;
+   }
+   const sample=(actionSamples[index]||[])[n%2];
+   if(sample){
+    const tr=document.createElement("tr");
+    sample.forEach((value,k)=>{const td=document.createElement("td");td.textContent=value;if(k===sample.length-1){const pill=document.createElement("span");pill.className="demo-pill";pill.textContent="Sample";td.append(" ",pill)}tr.appendChild(td)});
+    tbody.prepend(tr);
+    actionFeedback.textContent=label+" preview: a fictional sample row was added. This change exists only in this open demo.";
+    b.textContent=label+" ✓";
+   }else actionFeedback.textContent=label+" preview selected. No live business record is created.";
+  }));
  }else{
   $("#modalContent").innerHTML='<span class="tag">'+esc(p.tag)+'</span><h2>'+esc(p.title)+'</h2><p>'+esc(p.desc)+'</p><div class="detail-price">Starting from <strong>'+esc(p.price)+'</strong> <span class="smallmuted">USD · indicative price</span></div><h3>Key features</h3><ul class="detail-list">'+list+'</ul><h3>What is included</h3><p>'+esc(d[2])+'</p><h3>Estimated delivery</h3><p>'+esc(d[3])+'</p><p class="smallmuted">Final price and timeline depend on requirements, integrations, hosting and third-party services. This is a custom development offer, not an already deployed off-the-shelf product.</p><button class="btn" id="detailQuote">Request this software ↗</button>';
   $("#modalContent").querySelector("#detailQuote").addEventListener("click",()=>{$("#modal").classList.add("hidden");$("#quotation").scrollIntoView({behavior:"smooth"});});
