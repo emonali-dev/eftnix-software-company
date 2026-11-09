@@ -249,4 +249,5 @@ $('#modalClose').onclick=()=>$('#modal').classList.add('hidden');$('#modal').onc
 $('#adminLogin').onclick=()=>{let ok=confirm('Open the LOCAL DEMO admin panel? This is not protected by real authentication and contains only records stored in this browser.');if(ok){$('#adminPanel').classList.remove('hidden');renderAdmin();$('#adminPanel').scrollIntoView({behavior:'smooth'})}};
 $('#clearDemo').onclick=()=>{if(confirm('Delete all local demo payment records from this browser?')){localStorage.removeItem('eftnix_demo_payments');renderAdmin();toast('Local demo records cleared.')}};
 </script>
+<script type="module" src="./supabase-app.js"></script>
 </body></html>
